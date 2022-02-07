@@ -1,0 +1,15 @@
+sourceCompatibility = 1.7
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+sourceSets.main.java.srcDirs = [ "src/" ]
+
+eclipse.project.name = appName + "-core"
+
+dependencies {
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+    implementation 'org.apache.logging.log4j:log4j-core:2.17.1'
+    implementation 'org.jsoup:jsoup:1.14.3'
+
+    implementation 'org.mongodb:mongo-java-driver:3.12.10'
+    implementation files('/Users/leekwangseok/Desktop/projraming/int_t\'s LogManager/out/artifacts/LogManager/LogManager.jar')
+}
