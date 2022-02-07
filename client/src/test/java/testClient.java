@@ -42,8 +42,8 @@ public class testClient {
                             break;
                     }
                 } else if (arg[0].equals("finance")) {
-                    if (arg.length <= 1 || arg[1].isEmpty()) log.error("finance [subject code]");
-                    else if (arg.length <= 2) {
+                    if (arg.length <= 2 && arg[1].isEmpty()) log.error("finance [subject code]");
+                    else if (arg.length <= 3) {
                         if (arg[2].equals("buy")) log.info(arg[1] + "buy");
 
                         //TODO finance gui and sell
