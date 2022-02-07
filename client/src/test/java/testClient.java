@@ -28,9 +28,6 @@ public class testClient {
             try {
                 System.out.print("FireStock:" + p + "$ ");
                 String[] arg = in.readLine().split("\\s");
-                for (String s : arg) {
-                    log.debug(s);
-                }
                 if (arg[0].equals("exit")) {
                     break;
                 } else if (arg[0].equals("help")) {
@@ -42,13 +39,16 @@ public class testClient {
                             break;
                     }
                 } else if (arg[0].equals("finance")) {
-                    if (arg.length <= 2 && arg[1].isEmpty()) log.error("finance [subject code]");
-                    else if (arg.length <= 3) {
-                        if (arg[2].equals("buy")) log.info(arg[1] + "buy");
-
-                        //TODO finance gui and sell
+                    if (arg.length <= 1) log.error("finance [subject code]");
+                    else if (arg[1].isEmpty()) log.error("finance [subject code]");
+//                    else if (arg[2].equals("buy")) log.debug("buy");
+//                    else if (arg[2].equals("sell")) log.debug("sell");
+                    else {
+                        var e = Finance(arg[1]);
+                        if (e instanceof String) log.error("finance: subject code not found");
+                        else log.info(arg[1] + ": " + e);
                     }
-                    else log.info(arg[1] + ": " + Finance(arg[1]));
+
                 }
 
                 //TODO finance gui and sell
@@ -58,7 +58,7 @@ public class testClient {
         }
     }
 
-    public static double Finance(String subject) {
+    public static Object Finance(String subject) {
         String URL = "https://finance.yahoo.com/quote/" + subject + "?p=" + subject + "&.tsrc=fin-srch";
         Document doc = null;
         try {
@@ -73,15 +73,19 @@ public class testClient {
             eliment = String.valueOf(e);
         }
 
-        int idx1 = eliment.indexOf("\n<");
+        if (eliment == null) {
+            return "1";
+        }
+
+        var idx1 = eliment.indexOf("\n<");
         String el1 = eliment.substring(0, idx1);
-        int id = el1.indexOf("\">");
+        var id = el1.indexOf("\">");
         String el2 = el1.substring(id+1);
         el2 = el2.replace(">", "");
         el2 = el2.replace("\n", "");
         el2 = el2.replace(" ", "");
 
-        double el3 = Double.parseDouble(el2.replace(",", ""));
+        var el3 = Double.parseDouble(el2.replace(",", ""));
 
         return el3;
     }
