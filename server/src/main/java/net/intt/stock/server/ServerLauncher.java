@@ -29,6 +29,7 @@ public class ServerLauncher {
 
             String line = null;
             while (true) {
+
                 String str = in.readLine();
                 pw.println(line);
                 if (str.equals("stop")) {
