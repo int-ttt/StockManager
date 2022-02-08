@@ -12,42 +12,32 @@ public class ServerLauncher {
     static LogManager log = new LogManager("FireStockServer");
 
     public static void main(String[] args) {
-        Socket socket;
-        ServerSocket server_socket = null;
+        ServerSocket server;
+        Socket s;
+        BufferedReader br;
         BufferedReader CLin;
-        BufferedReader in;
-        PrintWriter out;
-
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        PrintWriter pw;
         try {
-            server_socket = new ServerSocket(56077);
+            server = new ServerSocket(56077);
+            System.out.println("Server Ready........");
+            s = server.accept();
 
-        } catch (IOException e) {
-            log.error("해당 포트가 열려있습니다.");
-        }
-        log.info("서버 오픈!!");
+            br = new BufferedReader(new InputStreamReader(s.getInputStream()));
+            pw = new PrintWriter(s.getOutputStream(), true);
+            System.out.println(br.readLine() + " 님이 접속하셨습니다..");
 
-        try {
-            socket = Objects.requireNonNull(server_socket).accept();
-
-            CLin = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
-            in = new BufferedReader(new InputStreamReader(System.in));
+            String line = null;
             while (true) {
-                String str = CLin.readLine();
-                String inStr = in.readLine();
-
-                log.info("Client로 부터 온 메세지 : " + str);
-
-                if (inStr.equals("exit")) {
+                String str = in.readLine();
+                pw.println(line);
+                if (str.equals("stop")) {
                     break;
                 }
-
-                out.write(str);
-                out.flush();
-                socket.close();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            br.close();
+        }catch(Exception e) {
+            System.out.println("Client와의 연결이 끊어졌습니다..");
         }
     }
 }

@@ -25,37 +25,44 @@ public class testClient {
             pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
             SVin = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             System.out.print("FireStock:  insert your nickname$ ");
-            String input = in.readLine();
-            p = input;
+            p = in.readLine();
+            pw.println(p);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        while (true) {
-            try {
+        try {
+            while (true) {
+                if (!socket.isClosed()) {
+                    try {
+                        socket.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
                 System.out.print("FireStock:" + p + "$ ");
                 String[] arg = in.readLine().split("\\s");
                 log.debug(arg.length);
                 if (arg[0].equals("exit")) {
                     break;
                 } else if (arg[0].equals("help")) {
-                    if (arg.length <=  1) { log.info(0); }
-                    else
-                    switch (arg[1]) {
+                    if (arg.length <= 1) {
+                        log.info(0);
+                    } else
+                        switch (arg[1]) {
                         case "1":
                             log.info(1);
                             break;
                     }
                 } else if (arg[0].equals("finance")) {
                     if (arg.length == 2) {
-                        if (arg[1].isEmpty()) log.error("finance [subject code] [buy|sell] [count] \nex) finance btc-usd buy 0.1");
+                        if (arg[1].isEmpty())
+                            log.error("finance [subject code] [buy|sell] [count] \nex) finance btc-usd buy 0.1");
                         else {
                             var e = Finance(arg[1]);
                             if (e instanceof String) log.error("finance: subject code not found");
                             else log.info(arg[1] + ": " + e);
                         }
-                    }
-                    else if (arg.length >= 4) {
+                    } else if (arg.length >= 4) {
                         if (!arg[3].isEmpty()) {
                             double d;
                             var e = Finance(arg[1]);
@@ -71,26 +78,31 @@ public class testClient {
                             if (arg[2].equals("buy")) {
                                 Objects.requireNonNull(pw).println("finance buy" + arg[2] + " " + arg[3]);
                                 log.info(SVin.readLine());
-                            }
-                            else if (arg[2].equals("sell")) {
+                            } else if (arg[2].equals("sell")) {
                                 Objects.requireNonNull(pw).println("finance sell" + arg[2] + " " + arg[3]);
                                 log.info(SVin.readLine());
-                            }
-                            else {
+                            } else {
                                 log.error("error");
                             }
-                        }
-                        else log.error("finance [subject code] [buy|sell] [count]");
-                    }
-                    else log.error("finance [subject code] [buy|sell] [count]");
+                        } else log.error("finance [subject code] [buy|sell] [count]");
+                    } else log.error("finance [subject code] [buy|sell] [count]");
                 } else if (arg[0].equals("money")) {
                     log.info("your money: " + money);
                 }
-
                 //TODO finance gui and sell
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                in.close();
+                socket.close();
+                SVin.close();
+                pw.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
         }
 
         try {
