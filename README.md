@@ -1,4 +1,4 @@
-##FireStock _by int_t and_
+FireStock _by int_t and_
 =
 this is my first game
 -
