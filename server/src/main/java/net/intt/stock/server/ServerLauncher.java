@@ -1,3 +1,10 @@
+/**
+ * @version 0.0.5
+ * @auther int_t(peanut_exe)
+ *
+ * server base
+ */
+
 package net.intt.stock.server;
 
 import net.intt.util.LogManager;
@@ -5,40 +12,72 @@ import net.intt.util.LogManager;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Objects;
+import java.util.ArrayList;
 
-public class ServerLauncher {
+public class ServerLauncher extends Thread {
 
     static LogManager log = new LogManager("FireStockServer");
+    static int PORT = 56077;
 
-    public static void main(String[] args) {
-        ServerSocket server;
-        Socket s;
-        BufferedReader br;
-        BufferedReader CLin;
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        PrintWriter pw;
+    static ArrayList<Socket> list = new ArrayList<Socket>();
+    static Socket socket = null;
+
+    public ServerLauncher(Socket socket) {
+        ServerLauncher.socket = socket;
+        list.add(socket);
+    }
+    public void run() {
         try {
-            server = new ServerSocket(56077);
-            System.out.println("Server Ready........");
-            s = server.accept();
+            System.out.println("server : " + socket.getInetAddress()
+                    + " IP's client is connect");
 
-            br = new BufferedReader(new InputStreamReader(s.getInputStream()));
-            pw = new PrintWriter(s.getOutputStream(), true);
-            System.out.println(br.readLine() + " 님이 접속하셨습니다..");
+            InputStream input = socket.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 
-            String line = null;
-            while (true) {
+            OutputStream out = socket.getOutputStream();
+            PrintWriter writer = new PrintWriter(out, true);
 
-                String str = in.readLine();
-                pw.println(line);
-                if (str.equals("stop")) {
-                    break;
+            writer.print("connect to server. insert name$ ");
+
+            String readValue;
+            String name = null;
+            boolean identify = false;
+
+            while((readValue = reader.readLine()) != null ) {
+                if(!identify) {
+                    name = readValue;
+                    identify = true;
+                    writer.println("\n" + name + " is connect to server");
+                    log.info(name + " is connect to server");
+                    continue;
+                }
+
+                for(int i = 0; i<list.size(); i++) {
+                    out = list.get(i).getOutputStream();
+                    writer = new PrintWriter(out, true);
+                    writer.println(name + " : " + readValue);
+                    log.info(name + ": " + readValue);
                 }
             }
-            br.close();
-        }catch(Exception e) {
-            System.out.println("Client와의 연결이 끊어졌습니다..");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) {
+        try {
+            int socketPort = 56077;
+            ServerSocket serverSocket = new ServerSocket(socketPort);
+            System.out.println("socket : " + socketPort + " open to server");
+
+            while(true) {
+                Socket socketUser = serverSocket.accept();
+                Thread thd = new ServerLauncher(socketUser);
+                thd.start();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
