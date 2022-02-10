@@ -58,7 +58,7 @@ class ServerThread extends Thread {
             while ((arg = br.readLine()) != null) {
                 String[] args =  arg.split("\\s");
                 if (args[0].equals("moo")) {
-                    pw.write("                 (__)\n" +
+                    pw.println("                 (__)\n" +
                                "                 (oo)\n" +
                                "           /------\\/\n" +
                                "          / |    ||\n" +
@@ -72,7 +72,7 @@ class ServerThread extends Thread {
                                        "            ~~   ~~");
                 } else {
                     for (String s : args) {
-                        pw.write(s);
+                        pw.println(s);
                         System.out.println(s);
                     }
                 }
