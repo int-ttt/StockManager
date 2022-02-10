@@ -18,6 +18,7 @@ public class ListeningThread extends Thread {
 
             do {
                 System.out.println(reader.readLine());
+
             } while (!socket.isClosed());
 
         } catch (Exception e) {

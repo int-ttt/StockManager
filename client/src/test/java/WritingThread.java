@@ -6,7 +6,8 @@ import java.util.Scanner;
 
 public class WritingThread extends Thread {
     Socket socket = null;
-    Scanner scanner = new Scanner(System.in);
+    Scanner scn = new Scanner(System.in);
+    boolean quit = false;
 
     public WritingThread(Socket socket) {
         this.socket = socket;
@@ -18,15 +19,22 @@ public class WritingThread extends Thread {
             PrintWriter writer = new PrintWriter(out, true);
 
             do {
-                writer.println(scanner.nextLine());
+                String[] args = scn.nextLine().split("\\s");
+                if (args[0].indexOf("/") == 0) {
+                    args[0] = args[0].substring(1);
+                    if (args[0].equals("quit")) {
+                        quit = true;
+                        break;
+                    }
+                }
             } while (!socket.isClosed());
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
-
+    public boolean isQuit() {
+        return quit;
+    }
 }

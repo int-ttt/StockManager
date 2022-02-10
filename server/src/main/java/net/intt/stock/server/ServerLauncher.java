@@ -2,7 +2,7 @@
  * @version 0.0.5
  * @auther int_t(peanut_exe)
  *
- * server base
+ * ㅋ
  */
 
 package net.intt.stock.server;
@@ -12,72 +12,75 @@ import net.intt.util.LogManager;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class ServerLauncher extends Thread {
 
     static LogManager log = new LogManager("FireStockServer");
-    static int PORT = 56077;
-
-    static ArrayList<Socket> list = new ArrayList<Socket>();
-    static Socket socket = null;
-
-    public ServerLauncher(Socket socket) {
-        ServerLauncher.socket = socket;
-        list.add(socket);
-    }
-    public void run() {
-        try {
-            System.out.println("server : " + socket.getInetAddress()
-                    + " IP's client is connect");
-
-            InputStream input = socket.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-
-            OutputStream out = socket.getOutputStream();
-            PrintWriter writer = new PrintWriter(out, true);
-
-            writer.print("connect to server. insert name$ ");
-
-            String readValue;
-            String name = null;
-            boolean identify = false;
-
-            while((readValue = reader.readLine()) != null ) {
-                if(!identify) {
-                    name = readValue;
-                    identify = true;
-                    writer.println("\n" + name + " is connect to server");
-                    log.info(name + " is connect to server");
-                    continue;
-                }
-
-                for(int i = 0; i<list.size(); i++) {
-                    out = list.get(i).getOutputStream();
-                    writer = new PrintWriter(out, true);
-                    writer.println(name + " : " + readValue);
-                    log.info(name + ": " + readValue);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public static void main(String[] args) {
         try {
-            int socketPort = 56077;
-            ServerSocket serverSocket = new ServerSocket(socketPort);
-            System.out.println("socket : " + socketPort + " open to server");
+            ServerSocket serverSocket = new ServerSocket(56077);
+            System.out.println("socket : " + 56077 + " open to server");
 
             while(true) {
-                Socket socketUser = serverSocket.accept();
-                Thread thd = new ServerLauncher(socketUser);
-                thd.start();
+                Socket socket = serverSocket.accept();
+
+                ServerThread thread = new ServerThread(socket);
+                thread.start();
+
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+}
 
+class ServerThread extends Thread {
+    private BufferedReader br;
+    private PrintWriter pw;
+    private Socket socket;
+
+    public ServerThread(Socket socket) {
+        try {
+            br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            this.socket = socket;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void run() {
+
+        try {
+            pw = new PrintWriter(socket.getOutputStream(), true);
+            String arg = null;
+            while ((arg = br.readLine()) != null) {
+                String[] args =  arg.split("\\s");
+                if (args[0].equals("moo")) {
+                    pw.write("                 (__)\n" +
+                               "                 (oo)\n" +
+                               "           /------\\/\n" +
+                               "          / |    ||\n" +
+                               "         *  /\\---/\\\n" +
+                               "            ~~   ~~");
+                    System.out.println("                 (__)\n" +
+                                       "                 (oo)\n" +
+                                       "           /------\\/\n" +
+                                       "          / |    ||\n" +
+                                       "         *  /\\---/\\\n" +
+                                       "            ~~   ~~");
+                } else {
+                    for (String s : args) {
+                        pw.write(s);
+                        System.out.println(s);
+                    }
+                }
+            }
+            br.close();
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
