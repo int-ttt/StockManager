@@ -2,7 +2,7 @@
  * @version 0.0.5
  * @auther int_t
  *
- *
+ * server file
  */
 
 package net.intt.stock.server;
@@ -59,5 +59,6 @@ public class ServerLauncher {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        log.info("finished init");
     }
 }
