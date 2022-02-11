@@ -1,8 +1,8 @@
 /**
  * @version 0.0.5
- * @auther int_t(peanut_exe)
+ * @auther int_t
  *
- * ㅋ
+ *
  */
 
 package net.intt.stock.server;
@@ -12,12 +12,15 @@ import net.intt.util.LogManager;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URISyntaxException;
 
-public class ServerLauncher extends Thread {
+public class ServerLauncher {
 
     static LogManager log = new LogManager("FireStockServer");
 
     public static void main(String[] args) {
+        setUp();
+        System.out.println("121231231");
         try {
             ServerSocket serverSocket = new ServerSocket(56077);
             System.out.println("socket : " + 56077 + " open to server");
@@ -25,60 +28,34 @@ public class ServerLauncher extends Thread {
             while(true) {
                 Socket socket = serverSocket.accept();
 
+                PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
+                pw.println("");
+
                 ServerThread thread = new ServerThread(socket);
                 thread.start();
-
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-}
 
-class ServerThread extends Thread {
-    private BufferedReader br;
-    private PrintWriter pw;
-    private Socket socket;
-
-    public ServerThread(Socket socket) {
+    public static void setUp() {
+        String PATH = "";
         try {
-            br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            this.socket = socket;
-        } catch (IOException e) {
+            String[] path = new File(new File(ServerLauncher.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath()).toString().split("/");
+            for (int i = 1; i < path.length - 1; i++) {
+                PATH = PATH + "/" + path[i];
+            }
+        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void run() {
-
+        File file = new File(PATH);
+        if (file.mkdirs()) {
+        }
+        file = new File(PATH + "/config.yml");
         try {
-            pw = new PrintWriter(socket.getOutputStream(), true);
-            String arg = null;
-            while ((arg = br.readLine()) != null) {
-                String[] args =  arg.split("\\s");
-                if (args[0].equals("moo")) {
-                    pw.println("                 (__)\n" +
-                               "                 (oo)\n" +
-                               "           /------\\/\n" +
-                               "          / |    ||\n" +
-                               "         *  /\\---/\\\n" +
-                               "            ~~   ~~");
-                    System.out.println("                 (__)\n" +
-                                       "                 (oo)\n" +
-                                       "           /------\\/\n" +
-                                       "          / |    ||\n" +
-                                       "         *  /\\---/\\\n" +
-                                       "            ~~   ~~");
-                } else {
-                    for (String s : args) {
-                        pw.println(s);
-                        System.out.println(s);
-                    }
-                }
+            if (file.createNewFile()) {
             }
-            br.close();
-            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

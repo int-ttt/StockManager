@@ -15,7 +15,7 @@ public class FireStock extends Game {
 	public String gme_name = "FireStock";
 	public static String sgme_name = "FireStock";
 
-	LogManager log = new LogManager(gme_name, PATH + "");
+	LogManager log = new LogManager(gme_name);
 
 	SpriteBatch batch;
 

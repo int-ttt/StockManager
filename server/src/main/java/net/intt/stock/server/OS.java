@@ -1,4 +1,7 @@
-package net.intt.stock.desktop;
+package net.intt.stock.server;
+
+import java.io.File;
+import java.io.IOException;
 
 public class OS {
 

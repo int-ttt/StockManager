@@ -7,16 +7,16 @@ import net.intt.util.LogManager;
 
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 
 public class DesktopLauncher {
 
 	static boolean RUN = false;
 
 	static String PATH;
-	static LogManager log = new LogManager(FireStock.sgme_name, FireStock.PATH);
+	static LogManager log = new LogManager(FireStock.sgme_name);
 
 	public static void main (String[] arg) {
-
 		init();
 		if (RUN) {
 			LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
