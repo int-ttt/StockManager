@@ -7,34 +7,32 @@
 
 package net.intt.stock.server;
 
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
 import net.intt.util.LogManager;
-import org.yaml.snakeyaml.Yaml;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-import java.util.Map;
-import java.util.Objects;
 
 public class ServerLauncher {
 
     static LogManager log = new LogManager("FireStockServer");
-
+    public static MongoClient mongoClient;
     static int port = 56077;
 
     public static void main(String[] args) {
+        mongoClient = MongoClients.create(MongoClientSettings.builder()
+                .applyConnectionString(new ConnectionString("mongodb+srv://int_t:250099@cluster0.m0z0j.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"))
+                .build());
         try {
             ServerSocket serverSocket = new ServerSocket(port);
-            System.out.println("socket : " + port + " open to server");
+            log.info("socket : " + port + " open to server");
 
             while(true) {
                 Socket socket = serverSocket.accept();
-
-                PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
-                pw.println("");
 
                 ServerThread thread = new ServerThread(socket);
                 thread.start();

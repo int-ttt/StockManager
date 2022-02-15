@@ -132,16 +132,6 @@ public class testClient {
         el2 = el2.replace("\n", "");
         el2 = el2.replace(" ", "");
 
-        var el3 = Double.parseDouble(el2.replace(",", ""));
-
-        return el3;
-    }
-    public static void Fin(boolean type, String[] args) {
-        boolean tp = false;
-        if (type) {
-
-        } else {
-
-        }
+        return Double.parseDouble(el2.replace(",", ""));
     }
 }

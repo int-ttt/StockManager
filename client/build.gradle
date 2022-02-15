@@ -13,6 +13,8 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
     implementation files('/Users/leekwangseok/Desktop/projraming/int_t\'s LogManager/out/artifacts/LogManager/LogManager.jar')
     implementation 'org.jsoup:jsoup:1.14.3'
+    implementation 'com.googlecode.json-simple:json-simple:1.1'
+    implementation 'commons-codec:commons-codec:1.11'
 }
 
 test {
