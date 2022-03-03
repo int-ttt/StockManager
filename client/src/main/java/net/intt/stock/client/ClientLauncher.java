@@ -1,65 +1,80 @@
 package net.intt.stock.client;
 
 import net.intt.util.LogManager;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.io.*;
 import java.net.Inet4Address;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.Objects;
-import java.util.Scanner;
 
 public class ClientLauncher {
     protected static boolean quit = false;
 
     public static final LogManager log = new LogManager("StockManager");
-    public static t2Thread t2;
+    public static ReadThread t2;
     public static File PATH;
-    public static String id;
+    public static String ID;
+    public static boolean login = true;
 
     public static void main(String[] args) {
         init();
         try {
             while (!quit) {
-                Scanner scn = new Scanner(System.in);
                 System.out.print("Server IP: ");
-                String arg = scn.next();
+                BufferedReader cbr = new BufferedReader(new InputStreamReader(System.in));
+
+                String arg = cbr.readLine();
                 Socket socket;
+
                 try {
                     socket = new Socket(arg, 56077);
                 } catch (IOException e) {
                     log.error("서버가 열려있지 않습니다");
                     continue;
                 }
-                Login login = new Login();
-                JSONParser parser = new JSONParser();
-                JSONObject json = (JSONObject) parser.parse(Files.readString(Paths.get(PATH.getPath())));
-                log.debug(json.get("lastjoin"));
                 BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                Authentication login = new Authentication(socket);
                 String line;
-                if (!json.get("name").equals("")) login.autologin(socket, json);
-                else while (!(line = br.readLine()).equals("pass")) {
+                boolean _break = false;
+                System.out.print("login$ ");
+                while (true) {
+                    String ag = cbr.readLine();
 
+                    if (ag.isEmpty()) {
+                        log.error("[login|signin] [ID] [Password]");
+                        continue;
+                    }
+
+                    String[] ags = ag.split("\\s");
+                    int _return = -1;
+
+                    if (ags[0].equals("help") || ags[0].equals("?")) {
+                        log.info("[login|signin] [ID] [Password]");
+                        continue;
+                    }
+
+                    if (ags.length < 3) {
+                        log.error("[login|signin] [ID] [Password]");
+                        continue;
+                    }
+
+                    switch (ags[0]) {
+
+                        case "login" -> _return = login.login(ags[1], ags[2]);
+                        case "signin" -> _return = login.signin(ags[1], ags[2]);
+                    }
+                    System.out.println(_return);
+                    switch (_return) {
+                        case -1 -> log.error("[login|signin] [ID] [Password]");
+                        case 0 -> _break = true;
+                    }
+                    if (_break) break;
                 }
-                //login();
-                t1Thread t1 = new t1Thread(socket, arg, log);
-                t2 = new t2Thread(socket, t1, arg);
-                System.out.print(arg + ":" + Inet4Address.getLocalHost() + "$ ");
+                InputThread t1 = new InputThread(socket, log);
+                t2 = new ReadThread(socket, t1);
+                System.out.print(ID + ":" + Inet4Address.getLocalHost() + "$ ");
                 t1.start();
                 t2.start();
                 t2.join();
@@ -67,7 +82,7 @@ public class ClientLauncher {
                 t1.stop();
                 socket.close();
             }
-        } catch (ParseException | IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -114,112 +129,4 @@ public class ClientLauncher {
             }
         }
     }
-
-    /*static void login() {
-        if (!json.get("name").equals("")) {
-            log.debug("DDFD");
-            int[] array = Arrays.stream(json.get("lastjoin").toString().split("-")).mapToInt(Integer::parseInt).toArray();
-            if (array[1] + 1 > Integer.parseInt(new SimpleDateFormat("MM").format(new Date()))) {
-                if (!(array[0] > Integer.parseInt(new SimpleDateFormat("yyyy").format(new Date())))) {
-                    ID = json.get("name").toString();
-                    password = json.get("password").toString();
-                    pw.println("^login " + ID + password);
-                    json.put("lastjoin", new SimpleDateFormat("yyyy-MM").format(new Date()));
-                    fw.write(json.toJSONString());
-                    fw.flush();
-                    fw.close();
-                } else login = true;
-            } else login = true;
-        } else login = true;
-        BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        String line;
-        if (login) {
-            while (!((line = br.readLine()).equals("success"))) {
-                log.error("dd");
-
-                BufferedReader sin = new BufferedReader(new InputStreamReader(System.in));
-                System.out.print("login$");
-                String[] ag = sin.readLine().split("\\s");
-                if (ag.length == 0) log.error("[login|signin] [ID] [PW]");
-                else if (ag[0].equals("login")) {
-                    ID = ag[1];
-                    password = new DigestUtils("SHA3-512").digestAsHex(ag[2]);
-                    pw.println("^login " + ID + " " + password);
-                } else if (ag[0].equals("signin")) {
-                    if (ag[1].contains(",")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains(".")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains("/")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains(":")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains(";")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains("\"")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains("'")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains("{")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains("}")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains("[")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains("]")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains("|")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains("\\")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains("+")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains("=")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains("<")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains(">")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains("?")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains("*")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains("(")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains(")")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains("!")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains("@")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains("#")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains("$")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains("%")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains("^")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains("&")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains("`")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[1].contains("~")) {
-                        log.error("this character is cannot use");
-                    } else if (ag[2].length() < 8) {
-                        log.error("password is short");
-                    } else {
-                        pw.println("^signin " + ID + " " + password);
-                    }
-                }
-            }
-            log.info(line);
-            json.put("name", ID);
-            json.put("password", password);
-            json.put("lastjoin", new SimpleDateFormat("yyyy-MM").format(new Date()));
-            fw.write(json.toJSONString());
-            fw.flush();
-            fw.close();
-        }
-    }*/
 }

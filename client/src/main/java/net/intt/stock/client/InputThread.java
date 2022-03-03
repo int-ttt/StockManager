@@ -15,16 +15,14 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Objects;
 
-public class t1Thread extends Thread {
+public class InputThread extends Thread {
 
     private PrintWriter pw;
     private final Socket socket;
-    private final String host;
     private final LogManager log;
 
-    public t1Thread(Socket socket, String host, LogManager log) throws IOException {
+    public InputThread(Socket socket, LogManager log) throws IOException {
         this.socket = socket;
-        this.host = host;
         this.log = log;
         try {
             pw = new PrintWriter(socket.getOutputStream(), true);
@@ -54,11 +52,11 @@ public class t1Thread extends Thread {
                         break loop;
                     case "help":
                         if (args.length <= 1) {
-                            log.info(0);
+                            log.info("0");
                         } else
                             switch (args[1]) {
                                 case "1":
-                                    log.info(1);
+                                    log.info("1");
                                     break;
                             }
                         break;
@@ -102,7 +100,7 @@ public class t1Thread extends Thread {
                     default:
                         ClientLauncher.log.error("명령어가 존재하지 않습니다");
                         try {
-                            System.out.print(host + ":" + InetAddress.getLocalHost() + "$ ");
+                            System.out.print(ClientLauncher.ID + ":" + InetAddress.getLocalHost() + "$ ");
                         } catch (UnknownHostException e) {
                             e.printStackTrace();
                         }

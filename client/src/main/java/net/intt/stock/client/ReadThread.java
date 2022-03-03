@@ -6,15 +6,13 @@ import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
 
-public class t2Thread extends Thread {
+public class ReadThread extends Thread {
 
     private BufferedReader br;
-    private final t1Thread t1;
-    private final String arg;
+    private final InputThread t1;
 
-    public t2Thread(Socket socket, t1Thread t1, String arg) {
+    public ReadThread(Socket socket, InputThread t1) {
         this.t1 = t1;
-        this.arg = arg;
         try {
             br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (IOException e) {
@@ -28,14 +26,14 @@ public class t2Thread extends Thread {
         try {
             while ((line = br.readLine()) != null) {
                 if (line.equals("")) {
-                    System.out.print(arg + ":" + InetAddress.getLocalHost() + "$ ");
+                    System.out.print(ClientLauncher.ID + ":" + InetAddress.getLocalHost() + "$ ");
                     continue;
                 }
                 String[] lines = line.split("=");
                 for (String s : lines) {
                     ClientLauncher.log.info(s);
                 }
-                System.out.print(arg + ":" + InetAddress.getLocalHost() + "$ ");
+                System.out.print(ClientLauncher.ID + ":" + InetAddress.getLocalHost() + "$ ");
             }
         } catch (IOException e) {
             e.printStackTrace();

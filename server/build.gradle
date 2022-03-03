@@ -10,14 +10,13 @@ repositories {
 
 dependencies {
     implementation 'org.yaml:snakeyaml:1.30'
-    implementation 'org.jetbrains:annotations:20.1.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-    implementation 'org.mongodb:mongodb-driver-sync:4.4.2'
+    implementation 'org.jetbrains:annotations:22.0.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    implementation 'org.mongodb:mongodb-driver-sync:4.5.0'
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
-    implementation 'org.slf4j:slf4j-api:1.7.25'
-    implementation 'commons-codec:commons-codec:1.11'
     implementation files('/Users/leekwangseok/Desktop/projraming/int_t\'s LogManager/out/artifacts/LogManager/LogManager.jar')
+    implementation 'commons-codec:commons-codec:1.15'
 }
 
 test {
