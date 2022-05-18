@@ -29,7 +29,7 @@ public class ServerThread implements Runnable {
                 args = arg.split("\\s");
 
                 if (!login) {
-                    Authentication auth = new Authentication(socket);
+                    Authentication auth = new Authentication(/*socket*/);
                     switch (args[0]) {
                         case "^login":
                             log.info(auth.login(args[1], args[2]));

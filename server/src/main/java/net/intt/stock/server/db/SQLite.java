@@ -25,11 +25,17 @@ public final class SQLite {
 //        System.out.println(rs.getString("id"));
     }
 
-    public boolean ID(String id) throws SQLException {
-        ResultSet rs = state.executeQuery("SELECT id FROM Users");
-        List<String> idList = new ArrayList<>();
-        while (rs.next()) {
-            idList.add(rs.getString("id"));
+    public static boolean ID(String id) {
+        ResultSet rs;
+        List<String> idList;
+        try {
+            rs = getInstance().state.executeQuery("SELECT id FROM Users");
+            idList = new ArrayList<>();
+            while (rs.next()) {
+                idList.add(rs.getString("id"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
         boolean bool = false;
@@ -52,15 +58,8 @@ public final class SQLite {
         return instance;
     }
 
-//    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-//        SQLite.getInstance().DBInit();
-//        Statement state = SQLite.getInstance().state;
-//        System.out.println( SQLite.getInstance().ID("abcdefgf"));
-//        ResultSet rs = state.executeQuery("SELECT id FROM Users");
-//        ArrayList<String> stringArrayList = new ArrayList<>();
-//        while (rs.next()) {
-//            stringArrayList.add(rs.getString("id"));
-//        }
-//        System.out.println(stringArrayList);
-//    }
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+        SQLite.getInstance().DBInit();
+        System.out.println(ID("ab"));
+    }
 }
