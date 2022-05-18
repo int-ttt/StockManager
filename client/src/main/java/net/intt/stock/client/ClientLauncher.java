@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ClientLauncher {
+public final class ClientLauncher {
     protected static boolean quit = false;
 
     public static final LogManager log = new LogManager("StockManager");

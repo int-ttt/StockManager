@@ -1,6 +1,5 @@
 package net.intt.stock.server;
 
-import org.apache.commons.codec.digest.DigestUtils;
 
 public class Users {
     private String id;
