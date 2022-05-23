@@ -37,7 +37,9 @@ public final class ServerLauncher  {
             while(true) {
                 Socket socket = serverSocket.accept();
 
-                broadcast.add(new PrintWriter(socket.getOutputStream(), true));
+                broadcast.add(new PrintWriter(
+                        socket.getOutputStream(),
+                        true));
 
                 Thread thread = new Thread(new ServerThread(socket));
                 thread.start();

@@ -27,12 +27,29 @@ public final class SQLite {
 
     public static boolean ID(String id) {
         ResultSet rs;
-        List<String> idList;
         try {
             rs = getInstance().state.executeQuery("SELECT id FROM Users");
-            idList = new ArrayList<>();
+            List<String> list = new ArrayList<>();
             while (rs.next()) {
-                idList.add(rs.getString("id"));
+                list.add(rs.getString("id"));
+            }
+            for (String str : list) {
+                if (str.equals(id)) return true;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
+    public static boolean Pwd(String pwd) {
+        ResultSet rs;
+        List<String> pwdList;
+        try {
+            rs = getInstance().state.executeQuery("SELECT pwd FROM Users");
+            pwdList = new ArrayList<>();
+            while (rs.next()) {
+                pwdList.add(rs.getString("pwd"));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -40,8 +57,8 @@ public final class SQLite {
 
         boolean bool = false;
 
-        for (String str : idList) {
-            if (id.equals(str)) {
+        for (String str : pwdList) {
+            if (pwd.equals(str)) {
                 bool = true;
                 break;
             }

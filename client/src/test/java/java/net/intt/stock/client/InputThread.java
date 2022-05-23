@@ -1,4 +1,4 @@
-package net.intt.stock.client;
+package java.net.intt.stock.client;
 
 import net.intt.util.LogManager;
 import org.jsoup.Jsoup;

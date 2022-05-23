@@ -1,4 +1,4 @@
-package net.intt.stock.client;
+package java.net.intt.stock.client;
 
 public class OS {
     private static String os = System.getProperty("os.name").toLowerCase();

@@ -1,5 +1,6 @@
-package net.intt.stock.client;
+package java.net.intt.stock.client;
 
+import net.intt.stock.client.ClientLauncher;
 import net.intt.util.LogManager;
 
 import java.io.BufferedReader;

@@ -19,10 +19,6 @@ public class FireStock extends Game {
 
 	SpriteBatch batch;
 
-	MongoClient mongoClient;
-	public MongoDatabase mongodb;
- 	public MongoCollection collection;
-
 	Texture img;
 
 	public static String PATH;
