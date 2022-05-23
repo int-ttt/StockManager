@@ -50,8 +50,11 @@ public class ClientSetup {
 
                 case "signup" ->
                         pw.println("^signup " + args[1] + " " + args[2]);
+                case "quit", "leave" -> {
+                    return -2;
+                }
             }
-            return 0;
+            return br.read();
         }
 
         public int client() throws IOException {
