@@ -1,6 +1,7 @@
-package net.intt.stock.client.Util;
+package net.intt.stock.client.Utils;
 
 import net.intt.stock.client.ClientLauncher;
+import net.intt.stock.client.Thread.InputThread;
 import net.intt.util.LogManager;
 
 import java.io.BufferedReader;
@@ -9,7 +10,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ClientSetup {
+public class Application {
 
     private static final LogManager log = ClientLauncher.log;
 
@@ -58,6 +59,10 @@ public class ClientSetup {
         }
 
         public int client() throws IOException {
+            Thread t = new Thread(new InputThread());
+            while (true) {
+                if (InputThread.isQuit()) break;
+            }
             return 0;
         }
     }

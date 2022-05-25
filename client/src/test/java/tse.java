@@ -1,62 +1,120 @@
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
 
-import net.intt.stock.client.Mod.EventHandler;
-import net.intt.stock.client.Mod.Listener;
-import org.reflections.Reflections;
-import org.reflections.scanners.MethodAnnotationsScanner;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
+class tse {
 
-public class tse implements Listener {
-    public static void main(String[] args) throws Exception {
-        runAllAnnotatedWith(new tse());
+    public static void main(String[] args) throws IOException {
+        Socket socket = new Socket("localhost", 5556);
+        Thread t = new Thread(new tses(socket));
+        Thread t2 = new Thread(new tseT(socket));
+        t.start();
+        t2.start();
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }));
     }
 
-    public static void runAllAnnotatedWith(Listener event) throws Exception {
-        Method[] methods = event.getClass().getMethods();
+    static class tses implements Runnable {
 
-        Set<Method> methods1 = new HashSet<>(Arrays.asList(methods));
-        System.out.println(methods1);
+        private final BufferedReader br;
+        private final PrintWriter pw;
 
-        Reflections reflections = new Reflections(new ConfigurationBuilder()
-                .setUrls(ClasspathHelper.forJavaClassPath()).setScanners(
-                        new MethodAnnotationsScanner()));
-        Set<Method> methods2 = reflections.getMethodsAnnotatedWith(mod.class);
-        System.out.println(methods2);
+        public tses(Socket socket) throws IOException {
+            this.br = new BufferedReader(new InputStreamReader(System.in));
+            this.pw = new PrintWriter(socket.getOutputStream(), true);
+        }
 
-        Set<Method> meth = new HashSet<>();
+        @Override
+        public void run() {
+            try {
+                while (true) {
+                    System.out.print("d:");
+                    String str = br.readLine();
+                    pw.println(str);
 
-        for (Method str : methods1) {
-            for (Method str1 : methods2) {
-                if (str.equals(str1)) {
-                    meth.add(str1);
                 }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
+    }
+    static class tseT implements Runnable {
 
-        for (Method method : meth) {
-            method.invoke(null);
+        private final BufferedReader br;
+        private final PrintWriter pw;
+
+        public tseT(Socket socket) throws IOException {
+            this.br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            this.pw = new PrintWriter(socket.getOutputStream(), true);
         }
 
-    }
-
-    @mod
-    public static void calledcs() {
-        System.out.println("called");
-    }
-
-    @mod
-    public static void calledcs2() {
-        System.out.println("called2");
+        @Override
+        public void run() {
+            try {
+                String str;
+                while (true) {
+                    str = br.readLine();
+                    System.out.println(str);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }
 
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-@interface mod {}
+class se {
+
+    public static void main(String[] args) throws IOException {
+        ServerSocket socket = new ServerSocket(5556);
+        System.out.println(socket);
+
+        while (true) {
+            Socket s = socket.accept();
+            System.out.println(s);
+            Thread t = new Thread(new tseT(s));
+            t.start();
+
+
+            if (false) break;
+        }
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }));
+    }
+    static class tseT implements Runnable {
+
+        private final BufferedReader br;
+        private final PrintWriter pw;
+
+        public tseT(Socket socket) throws IOException {
+            this.br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            this.pw = new PrintWriter(socket.getOutputStream(), true);
+        }
+
+        @Override
+        public void run() {
+            try {
+                String str;
+                while ((str = br.readLine()) != null) {
+                    System.out.println(str);
+                    pw.println(str);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+}

@@ -15,6 +15,11 @@ public final class FinanceThread implements Runnable {
         this.financeName = financeName;
     }
 
+    public static void main(String[] args) {
+        Thread t = new Thread(new FinanceThread("TSLA"));
+        t.start();
+    }
+
     @Override
     public void run() {
         System.out.println("press any key");
@@ -22,6 +27,12 @@ public final class FinanceThread implements Runnable {
             double price = finance(financeName);
             if (price == -1) break;
             System.out.print("\r" + financeName + "'s price is " + price);
+            try {
+                System.in.read();
+                System.in.skip(System.in.available());
+            } catch(Exception e) {
+                break;
+            }
         }
     }
 

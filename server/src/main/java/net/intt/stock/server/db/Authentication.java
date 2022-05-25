@@ -1,6 +1,7 @@
 package net.intt.stock.server.db;
 
 import net.intt.stock.server.ServerLauncher;
+import net.intt.stock.server.annotation.Test;
 import net.intt.util.LogManager;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.jetbrains.annotations.NotNull;
@@ -50,6 +51,7 @@ public final class Authentication {
         } else return 1;
     }
 
+    @Test
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         SQLite.getInstance().DBInit();
         Authentication auth = new Authentication();

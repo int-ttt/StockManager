@@ -6,14 +6,12 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ConnectThread implements Runnable {
+public class OutputThread implements Runnable {
 
-    private Socket socket;
     private BufferedReader br;
     private PrintWriter pw;
 
-    public ConnectThread(Socket socket) throws IOException {
-        this.socket = socket;
+    public OutputThread(Socket socket) throws IOException {
         this.br = new BufferedReader(
                 new InputStreamReader(socket.getInputStream()));
 
