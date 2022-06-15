@@ -12,5 +12,5 @@ dependencies {
     implementation 'org.yaml:snakeyaml:1.30'
 
     implementation 'org.mongodb:mongo-java-driver:3.12.10'
-    implementation files('/Users/leekwangseok/Desktop/projraming/int_t\'s LogManager/out/artifacts/LogManager/LogManager.jar')
+    implementation files('LogManager-0.1.0.jar')
 }
