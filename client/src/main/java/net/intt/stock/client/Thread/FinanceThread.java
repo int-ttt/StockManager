@@ -7,9 +7,10 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 
-public final class FinanceThread implements Runnable {
+public final class FinanceThread extends AbstractThreads {
 
     private final String financeName;
+    private boolean stop = false;
 
     public FinanceThread(String financeName) {
         this.financeName = financeName;
@@ -23,17 +24,16 @@ public final class FinanceThread implements Runnable {
     @Override
     public void run() {
         System.out.println("press any key");
+        Thread wait = new Thread(new WaitThread(this));
+        wait.start();
         while (true) {
+            if (stop) break;
             double price = finance(financeName);
             if (price == -1) break;
             System.out.print("\r" + financeName + "'s price is " + price);
-            try {
-                System.in.read();
-                System.in.skip(System.in.available());
-            } catch(Exception e) {
-                break;
-            }
         }
+        System.out.print("\r ");
+        System.out.println();
     }
 
     private double finance(String subject) {
@@ -63,8 +63,10 @@ public final class FinanceThread implements Runnable {
         el2 = el2.replace("\n", "");
         el2 = el2.replace(" ", "");
 
-        var el3 = Double.parseDouble(el2.replace(",", ""));
+        return Double.parseDouble(el2.replace(",", ""));
+    }
 
-        return el3;
+    public void setStop(boolean stop) {
+        this.stop = stop;
     }
 }

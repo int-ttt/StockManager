@@ -19,7 +19,7 @@ allprojects {
 
     version = '1.0'
     ext {
-        appName = "FireStock"
+        appName = "StockManager"
         gdxVersion = '1.10.0'
         roboVMVersion = '2.3.12'
         box2DLightsVersion = '1.5'
@@ -35,6 +35,7 @@ allprojects {
         gradlePluginPortal()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url 'https://jitpack.io' }
     }
 }
 

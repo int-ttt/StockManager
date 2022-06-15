@@ -1,7 +1,7 @@
 package net.intt.stock.client;
 
 import net.intt.stock.client.Utils.Application;
-import net.intt.util.LogManager;
+import org.intt.util.LogManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
