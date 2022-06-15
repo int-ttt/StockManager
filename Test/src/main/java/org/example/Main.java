@@ -8,7 +8,5 @@ public class Main {
         Thread.sleep(100);
 
         System.out.print("\\033[F\\r");
-
-        System.out.print("\r야 기분좋다");
     }
 }

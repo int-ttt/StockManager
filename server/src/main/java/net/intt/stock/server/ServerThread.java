@@ -2,7 +2,7 @@ package net.intt.stock.server;
 
 import net.intt.stock.server.db.Authentication;
 import net.intt.stock.server.db.SQLite;
-import net.intt.util.LogManager;
+import org.intt.util.LogManager;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

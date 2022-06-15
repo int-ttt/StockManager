@@ -2,7 +2,7 @@ package net.intt.stock.server.db;
 
 import net.intt.stock.server.ServerLauncher;
 import net.intt.stock.server.annotation.Test;
-import net.intt.util.LogManager;
+import org.intt.util.LogManager;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.jetbrains.annotations.NotNull;
 

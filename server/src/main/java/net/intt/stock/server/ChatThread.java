@@ -1,6 +1,6 @@
 package net.intt.stock.server;
 
-import net.intt.util.LogManager;
+import org.intt.util.LogManager;
 
 import java.io.PrintWriter;
 import java.util.Scanner;

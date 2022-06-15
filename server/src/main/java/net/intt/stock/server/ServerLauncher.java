@@ -8,7 +8,7 @@
 package net.intt.stock.server;
 
 import net.intt.stock.server.db.SQLite;
-import net.intt.util.LogManager;
+import org.intt.util.LogManager;
 
 import java.io.IOException;
 import java.io.PrintWriter;
