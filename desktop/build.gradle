@@ -23,7 +23,7 @@ task debug(dependsOn: classes, type: JavaExec) {
 }
 
 dependencies {
-    implementation files('LogManager-0.1.0.jar')
+    implementation files('/Users/leekwangseok/Desktop/projraming/int_t\'s LogManager/out/artifacts/LogManager/LogManager.jar')
 }
 
 task dist(type: Jar) {
