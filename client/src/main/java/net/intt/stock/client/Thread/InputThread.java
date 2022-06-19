@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+@SuppressWarnings("ALL")
 public class InputThread extends AbstractThreads {
 
     private static final String prefix = "finance";
@@ -38,30 +39,69 @@ public class InputThread extends AbstractThreads {
                 if (args.length >= 2) {
                     try {
                         Stock stock = YahooFinance.get(args[1]);
-                        if (stock.getQuote().getAsk() != null) {
-                            if (stock.getQuote().getPrice() != null) {
-                                if (args.length == 2) {
-                                    log.info(stock.getQuote().getPrice());
-                                } else {
-                                    switch (args[2]) {
-                                        case "price" -> log.info(stock.getQuote().getPrice());
-                                        case "percent" -> log.info(stock.getQuote().getChangeInPercent());
-//                                        case "buy" ->
-                                    }
-                                }
+                        try {
+                            double d = Double.parseDouble(stock.getQuote().getAsk().toString());
+                            if (args.length == 2) {
+                                log.info(stock.getQuote().getPrice());
                             } else {
+                                switch (args[2]) {
+                                    case "price" -> log.info(stock.getQuote().getPrice());
+                                    case "percent" -> log.info(stock.getQuote().getChangeInPercent());
+//                                  case "buy" ->
+                                }
+                            }
+                        } catch (Exception e) {
+                            try {
+                                double d = Double.parseDouble(stock.getQuote().getPrice().toString());
                                 log.error("use bitcoin command");
                                 log.error("bitcoin [subject code]");
                                 log.error("bitcoin [subject code] [price|percent]");
                                 log.error("bitcoin [subject code] [buy|sell] [count]");
+                            } catch (Exception ex) {
+                                log.error("this subject is not exists");
                             }
                         }
+
                     } catch (IOException e) {
                     }
                 } else {
                     log.error("finance [subject code]");
                     log.error("finance [subject code] [price|percent]");
                     log.error("finance [subject code] [buy|sell] [count]");
+                }
+            }
+            case "bitcoin" -> {
+                if (args.length >= 2) {
+                    try {
+                        Stock stock = YahooFinance.get(args[1]);
+                        try {
+                            double d = Double.parseDouble(stock.getQuote().getAsk().toString());
+                            try {
+                                double e = Double.parseDouble(stock.getQuote().getPrice().toString());
+                                log.error("use finance command");
+                                log.error("finance [subject code]");
+                                log.error("finance [subject code] [price|percent]");
+                                log.error("finance [subject code] [buy|sell] [count]");
+                            } catch (Exception ex) {
+                                log.error("this subject is not exists");
+                            }
+                        } catch (Exception e) {
+                            if (args.length == 2) {
+                                log.info(stock.getQuote().getPrice());
+                            } else {
+                                switch (args[2]) {
+                                    case "price" -> log.info(stock.getQuote().getPrice());
+                                    case "percent" -> log.info(stock.getQuote().getChangeInPercent());
+//                                  case "buy" ->
+                                }
+                            }
+                        }
+                    } catch (IOException e) {
+                    }
+                } else {
+                    log.error("bitcoin [subject code]");
+                    log.error("bitcoin [subject code] [price|percent]");
+                    log.error("bitcoin [subject code] [buy|sell] [count]");
                 }
             }
             default -> pw.println(arg);

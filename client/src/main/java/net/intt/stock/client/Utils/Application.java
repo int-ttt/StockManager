@@ -16,10 +16,10 @@ public class Application {
 
     private static final LogManager log = ClientLauncher.log;
 
-    public static Socket ServerJoin(int port, Scanner scn) throws IOException {
-        System.out.print("ip address$ ");
-        String arg = scn.nextLine();
-        return new Socket(arg, port);
+    public static Socket ServerJoin(int port, /*Scanner scn*/ String ip) throws IOException {
+//        System.out.print("ip address$ ");
+//        String arg = scn.nextLine();
+        return new Socket(/*arg*/ ip, port);
     }
 
     public static class MainClient {

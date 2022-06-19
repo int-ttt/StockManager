@@ -17,7 +17,7 @@ public class ClientLauncher {
         try {
             all: while (true) {
                 try {
-                    socket = Application.ServerJoin(56077, new Scanner(System.in));
+                    socket = Application.ServerJoin(56077, /*new Scanner(System.in)*/"localhost");
                 } catch (IOException e) {
                     log.error("서버가 열려있지 않습니다");
                     continue;
