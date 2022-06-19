@@ -3,4 +3,5 @@ include 'server'
 include 'client'
 include 'TestServer'
 include 'Test'
+include 'stock-api'
 

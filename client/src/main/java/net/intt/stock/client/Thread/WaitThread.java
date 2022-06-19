@@ -14,6 +14,11 @@ public class WaitThread extends AbstractThreads {
             System.in.read();
         } catch (Exception e) {
         }
-        thread.setStop(true);
+        thread.setStop(false);
+    }
+
+    @Override
+    public void loop() {
+
     }
 }

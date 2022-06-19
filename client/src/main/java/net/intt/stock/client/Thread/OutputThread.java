@@ -6,20 +6,32 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class OutputThread implements Runnable {
+public class OutputThread extends AbstractThreads {
 
-    private BufferedReader br;
-    private PrintWriter pw;
+    private final BufferedReader br;
+    private final PrintWriter pw;
 
-    public OutputThread(Socket socket) throws IOException {
-        this.br = new BufferedReader(
-                new InputStreamReader(socket.getInputStream()));
+    public OutputThread(BufferedReader br, PrintWriter pw) {
+        this.br = br;
 
-        this.pw = new PrintWriter(socket.getOutputStream());
+        this.pw = pw;
     }
 
     @Override
-    public void run() {
+    public void loop() {
+        String arg;
+        try {
+            while ((arg = br.readLine()) != null) {
+                System.out.println("\r" + arg);
+                System.out.print("\r" + InputThread.getPrefix()+ "> ");
+            }
+            stop = false;
+        } catch (IOException e) {
+            stop = false;
+        }
+    }
 
+    public boolean isStop() {
+        return this.stop;
     }
 }
