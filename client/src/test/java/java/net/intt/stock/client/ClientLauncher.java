@@ -1,6 +1,6 @@
 package java.net.intt.stock.client;
 
-import net.intt.util.LogManager;
+import org.intt.util.LogManager;
 import org.json.simple.JSONObject;
 
 import java.io.*;

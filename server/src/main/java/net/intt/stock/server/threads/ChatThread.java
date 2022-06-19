@@ -1,5 +1,6 @@
-package net.intt.stock.server;
+package net.intt.stock.server.threads;
 
+import net.intt.stock.server.ServerLauncher;
 import org.intt.util.LogManager;
 
 import java.io.PrintWriter;
@@ -14,21 +15,17 @@ public class ChatThread implements Runnable {
         Scanner scn = new Scanner(System.in);
          loop: while (true) {
             System.out.print("server$ ");
-            String[] line = scn.nextLine().split("\\s");
+            String arg = scn.nextLine();
+            String[] args = arg.split("\\s");
 
-            switch (line[0]) {
+            switch (args[0]) {
                 case "quit" -> {
-                    ServerLauncher.quit = true;
+                    ServerLauncher.quit = false;
                     break loop;
                 }
                 case "broadcast" -> {
-                    if (line.length <= 2) {
-                        String s = "";
-                        for (int i = 1; i < line.length; i++) {
-                            s += line[i];
-                        }
-                        broadcast(s);
-                    }
+                    String str = arg.replace("broadcast ", "");
+                    broadcast(str);
                 }
             }
         }

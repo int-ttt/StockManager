@@ -21,7 +21,7 @@ public class EventListener {
                 .setUrls(ClasspathHelper.forJavaClassPath()).setScanners(
                         new MethodAnnotationsScanner()));
 
-        for (Method str : event.getClass().getMethods()) {
+        for (Method str : event.getMethods()) {
             for (Method str1 : reflections.getMethodsAnnotatedWith(EventHandler.class)) {
                 if (str.equals(str1)) {
                     str1.invoke(null);

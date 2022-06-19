@@ -3,7 +3,7 @@ package net.intt.stock.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import net.intt.stock.FireStock;
-import net.intt.util.LogManager;
+import org.intt.util.LogManager;
 
 import java.awt.*;
 import java.io.File;

@@ -7,7 +7,9 @@
 
 package net.intt.stock.server;
 
+import net.intt.stock.server.threads.ChatThread;
 import net.intt.stock.server.db.SQLite;
+import net.intt.stock.server.threads.LoginThread;
 import org.intt.util.LogManager;
 
 import java.io.IOException;
@@ -23,7 +25,7 @@ public final class ServerLauncher  {
     public static final List<PrintWriter> broadcast = new ArrayList<>();
     public static LogManager log = new LogManager("StockServer");
     private static final int port = 56077;
-    public static boolean quit = false;
+    public static boolean quit = true;
 
     public static void main(String[] args) {
         try {
@@ -34,16 +36,17 @@ public final class ServerLauncher  {
             Thread chat = new Thread(new ChatThread());
             chat.start();
 
-            while(true) {
+            while (quit) {
                 Socket socket = serverSocket.accept();
 
                 broadcast.add(new PrintWriter(
                         socket.getOutputStream(),
                         true));
 
-                Thread thread = new Thread(new ServerThread(socket));
+                Thread thread = new Thread(new LoginThread(socket));
                 thread.start();
-                if (quit) break;
+//                Thread thread = new Thread(new ServerThread(socket));
+//                thread.start();
             }
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 try {

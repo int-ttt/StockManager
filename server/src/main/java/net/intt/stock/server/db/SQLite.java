@@ -77,6 +77,6 @@ public final class SQLite {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         SQLite.getInstance().DBInit();
-        System.out.println(ID("ab"));
+        System.out.println(ID("a"));
     }
 }

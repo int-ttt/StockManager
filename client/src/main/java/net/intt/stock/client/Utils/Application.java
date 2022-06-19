@@ -2,6 +2,7 @@ package net.intt.stock.client.Utils;
 
 import net.intt.stock.client.ClientLauncher;
 import net.intt.stock.client.Thread.InputThread;
+import net.intt.stock.client.Thread.OutputThread;
 import org.intt.util.LogManager;
 
 import java.io.BufferedReader;
@@ -9,13 +10,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Application {
 
     private static final LogManager log = ClientLauncher.log;
 
-    public static Socket ServerJoin(int port, BufferedReader br) throws IOException {
-        String arg = br.readLine();
+    public static Socket ServerJoin(int port, Scanner scn) throws IOException {
+        System.out.print("ip address$ ");
+        String arg = scn.nextLine();
         return new Socket(arg, port);
     }
 
@@ -29,41 +32,57 @@ public class Application {
                     new InputStreamReader(socket.getInputStream()));
 
             this.pw = new PrintWriter(
-                    socket.getOutputStream());
+                    socket.getOutputStream(), true);
         }
 
-        public int login() throws IOException {
-            BufferedReader client = new BufferedReader(
-                    new InputStreamReader(System.in));
+        public String login() throws Exception {
+//            Login.Input t1 = new Login.Input(socket);
+//            Login.Output t2 = new Login.Output(socket);
+//            t1.start();
+//            t2.start();
+//            t2.join();
+//            return t2.getReturn_();
+            System.out.print("login> ");
+            Scanner scn = new Scanner(System.in);
 
-            String arg = client.readLine();
+            String arg = scn.nextLine();
             String[] args = arg.split("\\s");
 
             if (args[0].equals("help") ||
                     args[0].equals("?") ||
                     args.length < 3) {
-                return -1;
+                return "-1";
             }
 
             switch (args[0]) {
-                case "login" ->
-                        pw.println("^login " + args[1] + " " + args[2]);
+                case "login", "signup" -> {
+                    pw.println("^" + arg);
+                }
 
-                case "signup" ->
-                        pw.println("^signup " + args[1] + " " + args[2]);
                 case "quit", "leave" -> {
-                    return -2;
+                    return "-2";
                 }
             }
-            return br.read();
+            return br.readLine();
         }
 
-        public int client() throws IOException {
-            Thread t = new Thread(new InputThread());
+        public int client() throws IOException, InterruptedException {
+            InputThread input = new InputThread(pw);
+            OutputThread output = new OutputThread(br, pw);
+            input.start();
+            output.start();
             while (true) {
-                if (InputThread.isQuit()) break;
+                if (!input.isStop() && !output.isStop()) break;
             }
-            return 0;
+            return input.getReturn();
         }
     }
+
+//    public static void main(String[] args) throws Exception {
+//        Socket socket = Application.ServerJoin(56077, new Scanner(System.in));
+//        Application.MainClient app = new MainClient(socket);
+//        while (true) {
+//            System.out.println(app.login());
+//        }
+//    }
 }

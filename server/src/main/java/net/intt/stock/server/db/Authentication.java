@@ -2,12 +2,12 @@ package net.intt.stock.server.db;
 
 import net.intt.stock.server.ServerLauncher;
 import net.intt.stock.server.annotation.Test;
-import org.intt.util.LogManager;
+import net.intt.stock.server.util.References;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.intt.util.LogManager;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
-import java.net.Socket;
+import java.security.SecureRandom;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -20,20 +20,14 @@ public final class Authentication {
 
     private final Statement state = SQLite.getInstance().state;
 
-    //private final PrintWriter pw;
-
-    public Authentication(/*PrintWriter pw*/) {
-        //this.pw = pw;
-    }
-
     public int login(String id, String pwd) {
         if (!(id.isEmpty() || pwd.isEmpty())) {
-            if (SQLite.ID(id)) {
+            //if (SQLite.ID(id)) {
                 if (SQLite.Pwd(DigestUtils.sha3_512Hex(pwd))) {
                     return 0;
-                } else return 3;
-            } else return 2;
-        } else return 1;
+                } else return 2;
+            //} else return 1;
+        } else return 3;
     }
 
     public int createAccount(@NotNull String id, @NotNull String pwd) throws SQLException {
@@ -55,18 +49,9 @@ public final class Authentication {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         SQLite.getInstance().DBInit();
         Authentication auth = new Authentication();
-        ResultSet rs = SQLite.getInstance().state.executeQuery(
-                "SELECT * FROM Users WHERE id LIKE 'id'");
 
-        List<String> list = new ArrayList<>();
-        list.add(rs.getString("id"));
-        list.add(rs.getString("pwd"));
-        list.add(rs.getString("data"));
-        list.add(rs.getString("money"));
-
-        System.out.println(list);
-        System.out.println(
-                auth.createAccount("idff", "dfffdfd"));
+//        System.out.println(
+//                auth.createAccount("idff", "dfffdfd"));
 
         System.out.println(
                 auth.login("idff", "dfffdfd"));
