@@ -22,11 +22,11 @@ public final class Authentication {
 
     public int login(String id, String pwd) {
         if (!(id.isEmpty() || pwd.isEmpty())) {
-            //if (SQLite.ID(id)) {
+            if (SQLite.ID(id)) {
                 if (SQLite.Pwd(DigestUtils.sha3_512Hex(pwd))) {
                     return 0;
                 } else return 2;
-            //} else return 1;
+            } else return 1;
         } else return 3;
     }
 
@@ -44,7 +44,6 @@ public final class Authentication {
             } else return 2;
         } else return 1;
     }
-
     @Test
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         SQLite.getInstance().DBInit();

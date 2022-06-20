@@ -1,12 +1,11 @@
-package net.intt.stock.client.Mod.Utils;
+package net.intt.stock.client.mod.Event;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.TYPE)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Mod {
-    String ModID();
+public @interface EventHandler {
 }

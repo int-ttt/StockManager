@@ -1,6 +1,5 @@
-package net.intt.stock.client.Thread;
+package net.intt.stock.client.thread;
 
-import net.intt.stock.client.interfaces.IThread;
 import yahoofinance.YahooFinance;
 
 import java.io.IOException;
@@ -15,7 +14,7 @@ public final class FinanceThread extends AbstractThreads {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println(YahooFinance.get("TSLA").getQuote().getPrice());
+        System.out.println(YahooFinance.get("030200.KS").getQuote().getPrice());
         Thread t = new Thread(new FinanceThread("TSLA"));
         t.start();
     }

@@ -1,10 +1,8 @@
-package net.intt.stock.client.Thread;
+package net.intt.stock.client.thread;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.Socket;
 
 public class OutputThread extends AbstractThreads {
 

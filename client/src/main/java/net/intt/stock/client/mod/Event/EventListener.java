@@ -1,4 +1,4 @@
-package net.intt.stock.client.Mod.Event;
+package net.intt.stock.client.mod.Event;
 
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;

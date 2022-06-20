@@ -1,4 +1,4 @@
-package net.intt.stock.client.Mod;
+package net.intt.stock.client.mod;
 
 import java.util.ArrayList;
 import java.util.List;

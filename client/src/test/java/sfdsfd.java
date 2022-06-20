@@ -1,4 +1,4 @@
-import net.intt.stock.client.Mod.Event.Listener;
+import net.intt.stock.client.mod.Event.Listener;
 
 public class sfdsfd implements Listener {
     public void aVoid() {

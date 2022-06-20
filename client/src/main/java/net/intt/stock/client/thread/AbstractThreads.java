@@ -1,4 +1,4 @@
-package net.intt.stock.client.Thread;
+package net.intt.stock.client.thread;
 
 import net.intt.stock.client.interfaces.IThread;
 
