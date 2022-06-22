@@ -10,7 +10,7 @@ package net.intt.stock.server;
 import net.intt.stock.server.threads.ChatThread;
 import net.intt.stock.server.db.SQLite;
 import net.intt.stock.server.threads.LoginThread;
-import org.intt.util.LogManager;
+import net.intt.util.LogManager;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,7 +25,7 @@ public final class ServerLauncher  {
     public static final List<PrintWriter> broadcast = new ArrayList<>();
     public static LogManager log = new LogManager("StockServer");
     private static final int port = 56077;
-    public static boolean quit = true;
+    private static boolean quit = true;
 
     public static void main(String[] args) {
         try {
@@ -60,5 +60,9 @@ public final class ServerLauncher  {
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void setQuit(boolean quit) {
+        ServerLauncher.quit = quit;
     }
 }

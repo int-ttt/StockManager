@@ -16,8 +16,8 @@ dependencies {
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
     implementation 'commons-codec:commons-codec:1.15'
     implementation 'org.xerial:sqlite-jdbc:3.36.0.3'
-    implementation files('/Users/leekwangseok/IdeaProjects/StockManager/libs/LogManager-0.1.0.jar')
-    implementation files('/Users/leekwangseok/IdeaProjects/StockManager/libs/YahooFinanceAPI-3.18.0.jar')
+    implementation files('/Users/leekwangseok/IdeaProjects/StockManager/libs/LogManager-0.1.0.jar',
+            '/Users/leekwangseok/IdeaProjects/StockManager/libs/YahooFinance-1.18-custom.jar' )
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.6'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.12.6'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.6'

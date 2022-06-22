@@ -2,17 +2,12 @@ package net.intt.stock.server.db;
 
 import net.intt.stock.server.ServerLauncher;
 import net.intt.stock.server.annotation.Test;
-import net.intt.stock.server.util.References;
+import net.intt.util.LogManager;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.intt.util.LogManager;
 import org.jetbrains.annotations.NotNull;
 
-import java.security.SecureRandom;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 public final class Authentication {
 

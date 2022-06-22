@@ -1,5 +1,6 @@
 package net.intt.stock.server.threads;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import net.intt.stock.server.db.Authentication;
 import net.intt.stock.server.db.SQLite;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -20,6 +21,7 @@ public class LoginThread implements Runnable {
     private final BufferedReader br;
     private final PrintWriter pw;
     private final Socket socket;
+    private double money;
 
     public LoginThread(Socket socket) throws IOException {
         br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -28,7 +30,7 @@ public class LoginThread implements Runnable {
     }
 
     private String playerData;
-
+    private String ID;
 
     @Override
     public void run() {
@@ -55,7 +57,12 @@ public class LoginThread implements Runnable {
                         pw.println(_return);
                         System.out.println(_return);
                         if (_return == 0) {
-                            return_ = _return;
+                            ID = args[1];
+                            String[] str = SQLite.getInstance().getPlayerData(args[1]).split("\\s");
+                            if (Boolean.parseBoolean(str[0])) {
+                                playerData = str[1];
+                                money = Double.parseDouble(str[2]);
+                            }
                         }
                     }
                     case "^signup" ->  {
@@ -64,7 +71,7 @@ public class LoginThread implements Runnable {
                         pw.println(_return);
                         if (_return == 0) {
                             this.setStop(false);
-                            Thread thread1 = new Thread(new ServerThread(socket));
+                            Thread thread1 = new Thread(new ServerThread(socket, getID(), getPlayerData(), getMoney()));
                             Thread thread2 = new Thread(new ChatThread());
                         }
                     }
@@ -82,6 +89,13 @@ public class LoginThread implements Runnable {
         return playerData;
     }
 
+    public String getID() {
+        return ID;
+    }
+
+    public double getMoney() {
+        return money;
+    }
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         SQLite.getInstance().DBInit();
 //        Thread t = new Thread(new LoginThread());

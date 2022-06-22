@@ -1,13 +1,10 @@
 package net.intt.stock;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import org.intt.util.LogManager;
+import net.intt.util.LogManager;
 
 
 public class FireStock extends Game {

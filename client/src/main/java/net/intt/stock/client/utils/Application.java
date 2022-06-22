@@ -3,7 +3,7 @@ package net.intt.stock.client.utils;
 import net.intt.stock.client.ClientLauncher;
 import net.intt.stock.client.thread.InputThread;
 import net.intt.stock.client.thread.OutputThread;
-import org.intt.util.LogManager;
+import net.intt.util.LogManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;

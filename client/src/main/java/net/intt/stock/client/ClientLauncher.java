@@ -1,7 +1,7 @@
 package net.intt.stock.client;
 
 import net.intt.stock.client.utils.Application;
-import org.intt.util.LogManager;
+import net.intt.util.LogManager;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -9,11 +9,9 @@ import java.net.Socket;
 public class ClientLauncher {
 
     public static final LogManager log = new LogManager("StockClient");
-    public static String ID;
 
     public static void main(String[] gs) {
         Socket socket;
-
         try {
             all: while (true) {
                 try {
@@ -27,7 +25,6 @@ public class ClientLauncher {
                     int re;
                     try {
                         if ((re = Integer.parseInt(client.login())) == 0) {
-                            ID = client.getID();
                             break;
                         }
                         else if (re == -2) {

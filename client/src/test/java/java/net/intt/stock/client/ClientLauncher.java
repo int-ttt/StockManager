@@ -1,6 +1,6 @@
 package java.net.intt.stock.client;
 
-import org.intt.util.LogManager;
+import net.intt.util.LogManager;
 import org.json.simple.JSONObject;
 
 import java.io.*;
@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.Scanner;
 
 public final class ClientLauncher {
-    protected static boolean quit = false;
+    private static boolean quit = false;
 
     public static final LogManager log = new LogManager("StockManager");
     public static ReadThread t2;

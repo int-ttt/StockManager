@@ -1,6 +1,6 @@
 package java.net.intt.stock.client;
 
-import org.intt.util.LogManager;
+import net.intt.util.LogManager;
 
 import java.io.*;
 import java.net.Socket;

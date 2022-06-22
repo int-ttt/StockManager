@@ -66,6 +66,17 @@ public final class SQLite {
         return bool;
     }
 
+    public String getPlayerData(String id) throws SQLException {
+        ResultSet rs = this.state.executeQuery("SELECT * FROM Users WHERE id Like '" +  id + "'");
+        String str;
+        try {
+            str = "true" + rs.getString("data") + " " + rs.getString("money");
+        } catch (SQLException e) {
+            str = "false false";
+        }
+        return str;
+    }
+
     private static SQLite instance;
 
     public static SQLite getInstance() {
@@ -77,6 +88,10 @@ public final class SQLite {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         SQLite.getInstance().DBInit();
-        System.out.println(ID("a"));
+        ResultSet rs = SQLite.getInstance().state.executeQuery("SELECT data FROM Users WHERE id Like 'id'");
+//        System.out.println(rs.getString("id"));
+//        System.out.println(rs.getString("pwd"));
+        System.out.println(rs.getString("data"));
+//        System.out.println(rs.getString("money"));
     }
 }

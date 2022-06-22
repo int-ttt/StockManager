@@ -1,17 +1,15 @@
 package net.intt.stock.client.thread;
 
 import net.intt.stock.client.ClientLauncher;
-import org.intt.util.LogManager;
+import net.intt.util.LogManager;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.math.BigInteger;
 import java.util.Scanner;
 
-@SuppressWarnings("ALL")
 public class InputThread extends AbstractThreads {
 
     private static final String prefix = "finance";
@@ -23,13 +21,13 @@ public class InputThread extends AbstractThreads {
     private final Scanner scn = new Scanner(System.in);
     private final PrintWriter pw;
     private final BufferedReader br;
-    private final String id;
+    private String id;
     private final ChatThread chat;
 
     public InputThread(BufferedReader br, PrintWriter pw) {
         this.br = br;
         this.pw = pw;
-        this.id = ClientLauncher.ID;
+        //this.id = ClientLauncher.ID;
         this.chat = new ChatThread(this.id);
     }
 
@@ -56,14 +54,14 @@ public class InputThread extends AbstractThreads {
                                     case "percent" -> log.info(stock.getQuote().getChangeInPercent());
                                     case "buy", "sell" -> {
                                         try {
-                                            double dou = Double.parseDouble(args[3]);
+                                            int dou = Integer.parseInt(args[3]);
                                             if (args[2].equals("buy")) {
-                                                buy(args[1], dou, false);
+                                                log.info(buy(args[1], dou));
                                             } else {
-                                                sell(args[1], dou, false);
+                                                log.info(sell(args[1], dou));
                                             }
                                         } catch (Exception e) {
-                                            log.error("count is number");
+                                            log.error("count is integer");
                                             log.error("finance [subject code]");
                                             log.error("finance [subject code] [price|percent]");
                                             log.error("finance [subject code] [buy|sell] [count]");
@@ -122,9 +120,9 @@ public class InputThread extends AbstractThreads {
                                         try {
                                             double dou = Double.parseDouble(args[3]);
                                             if (args[2].equals("buy")) {
-                                                buy(args[1], dou, false);
+                                                log.info(buy(args[1], dou));
                                             } else {
-                                                sell(args[1], dou, false);
+                                                log.info(sell(args[1], dou));
                                             }
                                         } catch (Exception ex) {
                                             log.error("count is number");
@@ -149,11 +147,12 @@ public class InputThread extends AbstractThreads {
                     log.error("bitcoin [subject code] [buy|sell] [count]");
                 }
             }
-            case "say" -> {
-
-            }
             case "chat" -> {
                 chat.start();
+                try {
+                    chat.join();
+                } catch (InterruptedException e) {
+                }
             }
             default -> pw.println(arg);
         }
@@ -167,17 +166,13 @@ public class InputThread extends AbstractThreads {
         return return_;
     }
 
-    public String buy(String subject, double dou, boolean bitcoin) throws IOException {
-        String str = "fin";
-        if (bitcoin) str = "bit";
-        pw.println("^finance buy " + str + " " + subject + " " + dou);
+    public String buy(String subject, double dou) throws IOException {
+        pw.println("^finance buy " + subject + " " + dou);
         return br.readLine();
     }
 
-    public String sell(String subject, double dou, boolean bitcoin) throws IOException {
-        String str = "fin";
-        if (bitcoin) str = "bit";
-        pw.println("^finance sell " + str + " " + subject + " " + dou);
+    public String sell(String subject, double dou) throws IOException {
+        pw.println("^finance sell " + subject + " " + dou);
         return br.readLine();
     }
 
