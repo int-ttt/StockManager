@@ -6,6 +6,8 @@ version '1.0'
 
 repositories {
     mavenCentral()
+    jcenter()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -20,6 +22,7 @@ dependencies {
     implementation 'org.slf4j:slf4j-simple:1.7.36'
     implementation files('/Users/leekwangseok/IdeaProjects/StockManager/libs/LogManager-0.1.0.jar',
             '/Users/leekwangseok/IdeaProjects/StockManager/libs/YahooFinance-1.18-custom.jar')
+    implementation 'jline:jline:2.6'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.6'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.12.6'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.6'

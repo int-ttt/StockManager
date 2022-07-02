@@ -8,6 +8,11 @@ public class Gui{
     private static Gui instance;
 
     public static Gui getInstance() {
+        if (instance == null) {
+            synchronized (Gui.class) {
+                instance = new Gui();
+            }
+        }
         return instance;
     }
 

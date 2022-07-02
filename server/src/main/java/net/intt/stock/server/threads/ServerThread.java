@@ -39,16 +39,15 @@ public class ServerThread implements Runnable {
             log.info("new player join");
             JSONObject json = (JSONObject) new JSONParser().parse(playerData);
             while (quit) {
-            String arg = br.readLine();
-            String[] args = arg.split("\\s");
+                String arg = br.readLine();
+                String[] args = arg.split("\\s");
                 switch (args[0]) {
-                    case "moo" -> {
-                        pw.println("                 (__)=                 (oo)=           /------\\/=          / |    ||=         *  /\\---/\\=            ~~   ~~");
-                        System.out.println("                 (__)=                 (oo)=           /------\\/=          / |    ||=         *  /\\---/\\=            ~~   ~~");
+                    case "moo" -> pw.println("                 (__)=                 (oo)=           /------\\/=          / |    ||=         *  /\\---/\\=            ~~   ~~");
+                    case "finance" -> {
+
                     }
-                    default -> {
-                        pw.println(arg);
-                        System.out.println(arg);
+                    case "chat" -> {
+
                     }
                 }
             }

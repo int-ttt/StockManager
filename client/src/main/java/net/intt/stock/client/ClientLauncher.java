@@ -10,7 +10,7 @@ public class ClientLauncher {
 
     public static final LogManager log = new LogManager("StockClient");
 
-    public static void main(String[] gs) {
+    public static void main(String[] args) {
         Socket socket;
         try {
             all: while (true) {

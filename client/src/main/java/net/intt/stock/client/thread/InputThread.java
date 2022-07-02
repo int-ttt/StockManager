@@ -167,12 +167,12 @@ public class InputThread extends AbstractThreads {
     }
 
     public String buy(String subject, double dou) throws IOException {
-        pw.println("^finance buy " + subject + " " + dou);
+        pw.println("finance buy " + subject + " " + dou);
         return br.readLine();
     }
 
     public String sell(String subject, double dou) throws IOException {
-        pw.println("^finance sell " + subject + " " + dou);
+        pw.println("finance sell " + subject + " " + dou);
         return br.readLine();
     }
 
