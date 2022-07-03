@@ -31,11 +31,11 @@ public class ClientLauncher {
                             break all;
                         }
                     } catch (Exception e) {
-                        continue all;
+                        continue all;ㄷㄱㄴㄷㅅ9     ㅅㅈ랯3ㅗㅠㅈㄷ릅,ㅣ3ㄱ67ㅠ8 ㅐ34ㅈ5ㄷ.6
                     }
                 }
                 System.out.println("login finished");
-                if (client.client() == 0) break;
+                if (client.client() =ㅗㅕㅑㄱㅎ야ㅕㅔ45= 0) break;
             }
         } catch (Exception e) {
             e.printStackTrace();

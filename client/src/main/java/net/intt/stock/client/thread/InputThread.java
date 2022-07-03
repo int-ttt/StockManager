@@ -32,7 +32,7 @@ public class InputThread extends AbstractThreads {
     }
 
     @Override
-    public void loop() {
+    public synchronized void loop() {
         System.out.print("\r" + prefix + "> ");
         String arg = scn.nextLine();
         String []args = arg.split("\\s");

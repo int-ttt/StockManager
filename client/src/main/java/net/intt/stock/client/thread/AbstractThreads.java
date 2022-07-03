@@ -13,7 +13,7 @@ public abstract class AbstractThreads extends Thread implements IThread {
 
     }
 
-    public void setStop(boolean stop) {
+    public synchronized void setStop(boolean stop) {
         this.stop = stop;
     }
 
