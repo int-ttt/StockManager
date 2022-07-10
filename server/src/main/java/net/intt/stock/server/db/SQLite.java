@@ -1,6 +1,7 @@
 package net.intt.stock.server.db;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,14 +11,22 @@ public final class SQLite {
     public Connection con;
     public Statement state;
 
-    public void DBInit() throws ClassNotFoundException, SQLException {
+    public void DBInit() throws ClassNotFoundException, IOException, SQLException {
         Class.forName("org.sqlite.JDBC");
 
         File file = new File("sql.db");
 
+        if (!file.exists()) file.createNewFile();
+
         con = DriverManager.getConnection("jdbc:sqlite:sql.db");
 
         state = con.createStatement();
+
+        try {
+            getInstance().state.executeQuery("SELECT * FROM Users");
+        } catch (SQLException e) {
+            getInstance().state.executeUpdate("CREATE TABLE Users(id, pwd, data, money)");
+        }
 
 //        int t = stat.executeUpdate("INSERT INTO Users(id,pwd,data,money) VALUES ('a','b','{krw}','0')");
 //        ResultSet rs = state.executeQuery("SELECT * FROM Users");
@@ -86,7 +95,7 @@ public final class SQLite {
         return instance;
     }
 
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+    public static void main(String[] args) throws SQLException, ClassNotFoundException, IOException {
         SQLite.getInstance().DBInit();
         ResultSet rs = SQLite.getInstance().state.executeQuery("SELECT data FROM Users WHERE id Like 'id'");
 //        System.out.println(rs.getString("id"));

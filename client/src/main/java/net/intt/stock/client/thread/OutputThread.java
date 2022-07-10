@@ -1,18 +1,19 @@
 package net.intt.stock.client.thread;
 
+import net.intt.stock.client.ClientLauncher;
+import net.intt.util.LogManager;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
 public class OutputThread extends AbstractThreads {
 
+    private LogManager log = ClientLauncher.log;
     private final BufferedReader br;
-    private final PrintWriter pw;
 
     public OutputThread(BufferedReader br, PrintWriter pw) {
         this.br = br;
-
-        this.pw = pw;
     }
 
     @Override
@@ -20,8 +21,7 @@ public class OutputThread extends AbstractThreads {
         String arg;
         try {
             while ((arg = br.readLine()) != null) {
-                System.out.println("\r" + arg);
-                System.out.print("\r" + InputThread.getPrefix()+ "> ");
+                log.info(arg);
             }
             stop = false;
         } catch (IOException e) {

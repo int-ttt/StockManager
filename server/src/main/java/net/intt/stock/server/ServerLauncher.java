@@ -10,7 +10,10 @@ package net.intt.stock.server;
 import net.intt.stock.server.threads.ChatThread;
 import net.intt.stock.server.db.SQLite;
 import net.intt.stock.server.threads.LoginThread;
+import net.intt.stock.server.util.JlineStream;
 import net.intt.util.LogManager;
+import org.jline.reader.LineReader;
+import org.jline.reader.LineReaderBuilder;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,7 +26,9 @@ import java.util.List;
 public final class ServerLauncher  {
 
     public static final List<PrintWriter> broadcast = new ArrayList<>();
-    public static LogManager log = new LogManager("StockServer");
+    public static final List<String> playerList = new ArrayList<>();
+    public static final LineReader reader = LineReaderBuilder.builder().build();
+    public static LogManager log = new LogManager("StockServer", new JlineStream(reader));
     private static final int port = 56077;
     private static boolean quit = true;
 
@@ -33,8 +38,7 @@ public final class ServerLauncher  {
             ServerSocket serverSocket = new ServerSocket(56077);
             log.info("socket : " + port + " open to server");
 
-            Thread chat = new Thread(new ChatThread());
-            chat.start();
+            new Thread(new ChatThread()).start();
 
             while (quit) {
                 Socket socket = serverSocket.accept();

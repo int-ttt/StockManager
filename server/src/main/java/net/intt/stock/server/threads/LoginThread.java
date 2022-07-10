@@ -1,9 +1,11 @@
 package net.intt.stock.server.threads;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import net.intt.stock.server.ServerLauncher;
 import net.intt.stock.server.db.Authentication;
 import net.intt.stock.server.db.SQLite;
+import net.intt.util.LogManager;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,14 +18,13 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class LoginThread implements Runnable {
-
     private boolean stop = true;
     private final BufferedReader br;
     private final PrintWriter pw;
     private final Socket socket;
     private double money;
 
-    public LoginThread(Socket socket) throws IOException {
+    public LoginThread(@NotNull Socket socket) throws IOException {
         br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         pw = new PrintWriter(socket.getOutputStream(), true);
         this.socket = socket;
@@ -36,26 +37,23 @@ public class LoginThread implements Runnable {
     public void run() {
         try {
             while (stop) {
-                int return_;
-                System.out.print(">");
                 String arg = br.readLine();
-                System.out.println(arg);
                 String[] args;
                 try {
                     args = arg.split("\\s");
                 } catch (Exception e) {
-                    return_ = -2;
-                    pw.println("-2");
+                    pw.println("login -2");
                     return;
                 }
                 Authentication auth = new Authentication();
 
                 switch (args[0]) {
                     case "^login" -> {
+                        ServerLauncher.log.info(arg);
                         int _return = auth.login(
                                 args[1], DigestUtils.sha1Hex(args[2]));
-                        pw.println(_return);
-                        System.out.println(_return);
+                        pw.println("login " + _return);
+                        ServerLauncher.log.info(_return);
                         if (_return == 0) {
                             ID = args[1];
                             String[] str = SQLite.getInstance().getPlayerData(args[1]).split("\\s");
@@ -63,16 +61,17 @@ public class LoginThread implements Runnable {
                                 playerData = str[1];
                                 money = Double.parseDouble(str[2]);
                             }
+                            new Thread(new ServerThread(socket, getID(), getPlayerData(), getMoney())).start();
                         }
                     }
                     case "^signup" ->  {
                         int _return = auth.createAccount(args[1], DigestUtils.sha1Hex(args[2]));
-                        System.out.println(_return);
-                        pw.println(_return);
+                        pw.println("login " + _return);
+                        ServerLauncher.log.info(arg);
+                        ServerLauncher.log.info(_return);
                         if (_return == 0) {
                             this.setStop(false);
-                            Thread thread1 = new Thread(new ServerThread(socket, getID(), getPlayerData(), getMoney()));
-                            Thread thread2 = new Thread(new ChatThread());
+                            new Thread(new ServerThread(socket, getID(), getPlayerData(), getMoney())).start();
                         }
                     }
                 }
@@ -96,15 +95,4 @@ public class LoginThread implements Runnable {
     public double getMoney() {
         return money;
     }
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        SQLite.getInstance().DBInit();
-//        Thread t = new Thread(new LoginThread());
-
-//        t.start();
-        Authentication auth = new Authentication();
-//        System.out.println(auth.createAccount("id", "pwdpwd"));
-
-        System.out.println(auth.login("id", "pwdpwd"));
-    }
-
 }

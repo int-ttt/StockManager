@@ -1,7 +1,9 @@
 package net.intt.stock.server.threads;
 
 import net.intt.stock.server.ServerLauncher;
+import net.intt.stock.server.util.Util;
 import net.intt.util.LogManager;
+import org.jline.reader.LineReader;
 
 import java.io.PrintWriter;
 import java.util.Scanner;
@@ -10,33 +12,49 @@ public class ChatThread implements Runnable {
 
     private final LogManager log = ServerLauncher.log;
     private boolean quit = true;
+    private final LineReader reader = ServerLauncher.reader;
 
     @Override
     public void run() {
-        Scanner scn = new Scanner(System.in);
         while (quit) {
-            System.out.print("server$ ");
-            String arg = scn.nextLine();
+            String arg = reader.readLine("server$ ");
             String[] args = arg.split("\\s");
 
             switch (args[0]) {
-                case "quit" -> {
-                    ServerLauncher.setQuit(false);
-                    this.setQuit(false);
-                    ServerThread.setQuit(false);
+                case "quit" -> System.exit(1);
+                case "help" -> help();
+                case "moo" -> {
+                    log.info("                 (__)");
+                    log.info("                 (oo)");
+                    log.info("           /------\\/");
+                    log.info("          / |    ||");
+                    log.info("         *  /\\---/\\");
+                    log.info("            ~~   ~~");
                 }
                 case "broadcast" -> {
+                    if (args.length < 2) continue;
                     String str = arg.replace("broadcast ", "");
-                    broadcast(str);
+                    Util.broadcast(str);
                 }
             }
         }
     }
 
-    public void broadcast(Object msg) {
+    private void help() {
+        String str = """
+                    quit - quit the game
+                    broadcast - broadcast message
+                    say - say message
+                    moo - moooooooooo
+                    playerList - get player List
+                """;
+        log.info(str);
+    }
+
+    private void broadcast(Object msg) {
+        log.info(msg);
         synchronized (ServerLauncher.broadcast) {
             if (ServerLauncher.broadcast.isEmpty()) {
-                log.error("there is no accessor on the server");
                 return;
             }
             for (PrintWriter pw : ServerLauncher.broadcast) {

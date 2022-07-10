@@ -4,6 +4,17 @@ plugins {
 
 version '1.0'
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'net/intt/stock/server/ServerLauncher'
+    }
+    from {
+        configurations.compileClasspath.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
 repositories {
     mavenCentral()
 }
@@ -17,11 +28,8 @@ dependencies {
     implementation 'commons-codec:commons-codec:1.15'
     implementation 'org.xerial:sqlite-jdbc:3.36.0.3'
     implementation files('/Users/leekwangseok/IdeaProjects/StockManager/libs/LogManager-0.1.0.jar',
-            '/Users/leekwangseok/IdeaProjects/StockManager/libs/YahooFinance-1.18-custom.jar',
-            '/Users/leekwangseok/IdeaProjects/StockManager/libs/jcurses.jar')
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.6'
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.12.6'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.6'
+            '/Users/leekwangseok/IdeaProjects/StockManager/libs/YahooFinance-1.18-custom.jar')
+    implementation 'org.jline:jline:3.21.0'
 }
 
 test {

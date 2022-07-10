@@ -2,6 +2,7 @@ package net.intt.stock.client.thread;
 
 import net.intt.stock.client.ClientLauncher;
 import net.intt.util.LogManager;
+import org.jline.reader.LineReader;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 
@@ -18,7 +19,7 @@ public class InputThread extends AbstractThreads {
         return this.stop;
     }
     private int return_;
-    private final Scanner scn = new Scanner(System.in);
+    private final LineReader reader = ClientLauncher.reader;
     private final PrintWriter pw;
     private final BufferedReader br;
     private String id;
@@ -32,14 +33,14 @@ public class InputThread extends AbstractThreads {
     }
 
     @Override
-    public synchronized void loop() {
-        System.out.print("\r" + prefix + "> ");
-        String arg = scn.nextLine();
-        String []args = arg.split("\\s");
+    public void loop() {
+        String arg = reader.readLine(prefix + "$ ");
+        String[] args = arg.split("\\s");
         switch (args[0]) {
             case "stop", "quit" -> {
                 return_ = 0;
                 setStop(false);
+                System.exit(0);
             }
             case "finance" -> {
                 if (args.length >= 2) {

@@ -4,7 +4,9 @@ import net.intt.stock.client.ClientLauncher;
 import net.intt.stock.client.thread.InputThread;
 import net.intt.stock.client.thread.OutputThread;
 import net.intt.util.LogManager;
+import org.jline.reader.LineReader;
 
+import javax.sound.sampled.Line;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,6 +28,7 @@ public class Application {
 
         private final BufferedReader br;
         private final PrintWriter pw;
+        private final LineReader reader = ClientLauncher.reader;
 
         public MainClient(Socket socket) throws IOException {
             this.br = new BufferedReader(
@@ -39,8 +42,7 @@ public class Application {
 
         public String login() throws Exception {
             System.out.print("login> ");
-            Scanner scn = new Scanner(System.in);
-            String arg = scn.nextLine();
+            String arg = reader.readLine();
             String[] args = arg.split("\\s");
             if (args[0].equals("help") ||
                     args[0].equals("?") ||
@@ -53,8 +55,11 @@ public class Application {
                     return "-2";
                 }
             }
-            String return_;
-            if (Integer.parseInt(return_ = br.readLine()) == 0) ID = args[1];
+            String return_ = br.readLine();
+            String[] ar;
+//            if (Integer.parseInt(return_ = br.readLine()) == 0) ID = args[1];
+            if (return_ != null) if ((ar = return_.split("\\s"))[0].equals("login")) return_ = ar[1];
+            else return "-4";
             return return_;
         }
 

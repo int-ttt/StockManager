@@ -1,24 +1,30 @@
 package net.intt.stock.client;
 
 import net.intt.stock.client.utils.Application;
+import net.intt.stock.client.utils.JlineStream;
 import net.intt.util.LogManager;
+import org.jline.reader.LineReader;
+import org.jline.reader.LineReaderBuilder;
 
 import java.io.IOException;
 import java.net.Socket;
 
 public class ClientLauncher {
 
-    public static final LogManager log = new LogManager("StockClient");
+    public static final LineReader reader = LineReaderBuilder.builder().build();
+
+    public static final LogManager log = new LogManager("Finance", new JlineStream(reader));
 
     public static void main(String[] args) {
         Socket socket;
         try {
             all: while (true) {
                 try {
-                    socket = Application.ServerJoin(56077, /*new Scanner(System.in)*/"localhost");
+                    socket = Application.ServerJoin(56077, /*new Scanner(System.in).nextLine()*/"localhost");
                 } catch (IOException e) {
                     log.error("서버가 열려있지 않습니다");
-                    continue;
+                    throw new Exception();
+//                    continue;
                 }
                 Application.MainClient client = new Application.MainClient(socket);
                 while (true) {
@@ -31,11 +37,10 @@ public class ClientLauncher {
                             break all;
                         }
                     } catch (Exception e) {
-                        continue all;ㄷㄱㄴㄷㅅ9     ㅅㅈ랯3ㅗㅠㅈㄷ릅,ㅣ3ㄱ67ㅠ8 ㅐ34ㅈ5ㄷ.6
+                        continue all;
                     }
                 }
-                System.out.println("login finished");
-                if (client.client() =ㅗㅕㅑㄱㅎ야ㅕㅔ45= 0) break;
+                if (client.client() == 0) break;
             }
         } catch (Exception e) {
             e.printStackTrace();

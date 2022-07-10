@@ -6,6 +6,7 @@ import net.intt.util.LogManager;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -40,7 +41,7 @@ public final class Authentication {
         } else return 1;
     }
     @Test
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+    public static void main(String[] args) throws SQLException, ClassNotFoundException, IOException {
         SQLite.getInstance().DBInit();
         Authentication auth = new Authentication();
 
